@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilim - Venture AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .profile-wrapper {
+            padding: 100px 20px 50px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+        
+        .profile-sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+        }
+        
+        .profile-avatar-edit {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .profile-info h2 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .profile-info p {
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+        
+        .member-since {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 10px;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .profile-nav {
+            margin-top: 2rem;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            color: var(--dark);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .nav-item:hover {
+            background: var(--light);
+            color: var(--primary);
+        }
+        
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .profile-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .edit-btn {
+            background: var(--light);
+            color: var(--primary);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .info-section {
+            margin-bottom: 2rem;
+        }
+        
+        .info-section h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-label {
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .info-value {
+            font-weight: 600;
+        }
+        
+        .preference-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .preference-tag {
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .ai-analysis {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+        
+        .ai-analysis h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .travel-personality {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+        
+        .personality-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 992px) {
+            .profile-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i>
+                <span>Venture<span class="ai-text">AI</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="profile.html" class="btn-login">Profilim</a>
+                <button onclick="logout()" class="btn-secondary" style="border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış
+                </button>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- PROFİL SAYFASI -->
+    <div class="profile-wrapper">
+        <div class="profile-container">
+            <!-- SIDEBAR -->
+            <div class="profile-sidebar">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-astronaut"></i>
+                        <div class="profile-avatar-edit" onclick="editAvatar()">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="userName">Demo Kullanıcı</h2>
+                        <p id="userEmail">demo@ventureai.com</p>
+                        <div class="member-since">
+                            <i class="far fa-calendar"></i> Üyelik: Haziran 2023
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="tripCount">12</div>
+                        <div class="stat-label">Seyahat</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="aiSuggestions">47</div>
+                        <div class="stat-label">AI Öneri</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">%94</div>
+                        <div class="stat-label">Uyumluluk</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Arkadaş</div>
+                    </div>
+                </div>
+                
+                <div class="profile-nav">
+                    <a href="#personal" class="nav-item active" onclick="showSection('personal')">
+                        <i class="fas fa-user"></i> Kişisel Bilgiler
+                    </a>
+                    <a href="#preferences" class="nav-item" onclick="showSection('preferences')">
+                        <i class="fas fa-heart"></i> Tercihlerim
+                    </a>
+                    <a href="#travel-history" class="nav-item" onclick="showSection('travel-history')">
+                        <i class="fas fa-passport"></i> Seyahat Geçmişi
+                    </a>
+                    <a href="#ai-settings" class="nav-item" onclick="showSection('ai-settings')">
+                        <i class="fas fa-robot"></i> AI Ayarları
+                    </a>
+                    <a href="#security" class="nav-item" onclick="showSection('security')">
+                        <i class="fas fa-shield-alt"></i> Güvenlik
+                    </a>
+                    <a href="#subscription" class="nav-item" onclick="showSection('subscription')">
+                        <i class="fas fa-crown"></i> Abonelik
+                    </a>
+                </div>
+            </div>
+            
+            <!-- İÇERİK -->
+            <div class="profile-content">
+                <!-- Kişisel Bilgiler -->
+                <div id="personal-section" class="content-section">
+                    <div class="content-header">
+                        <h3><i class="fas fa-user-circle"></i> Kişisel Bilgilerim</h3>
+                        <button class="edit-btn" onclick="editPersonalInfo()">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-section">
+                            <h4><i class="fas fa-id-card"></i> Temel Bilgiler</h4>
+                            <div class="info-item">
+                                <span class="info-label">Ad Soyad</span>
+                                <span class="info-value" id="profileFullName">Demo Kullanıcı</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">E-posta</span>
+                                <span class="info-value" id="profileEmail">demo@ventureai.com</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Telefon</span>
+                                <span class="info-value" id="profilePhone">(555) 123 4567</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Doğum Tarihi</span>
+                                <span class="info-value" id="profileBirthDate">15.06.1990</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-map-marker-alt"></i> İletişim Bilgileri</h4>
+                            <div class="info-item">
+                                <span class="info-label">Ülke</span>
+                                <span class="info-value">Türkiye</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Şehir</span>
+                                <span class="info-value">İstanbul</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Adres</span>
+                                <span class="info-value">Örnek Mah. Demo Sok. No:123</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-analysis">
+                        <h4><i class="fas fa-brain"></i> AI Profil Analizim</h4>
+                        <p>Venture AI, tercihlerinize göre sizi analiz etti:</p>
+                        
+                        <div class="travel-personality">
+                            <h5>Seyahat Kişiliğiniz:</h5>
+                            <p><strong>"Kültür Keşifçisi & Gastronomi Aşığı"</strong></p>
+                            <p>Analizimize göre tarihi mekanları ve yerel lezzetleri keşfetmeyi seviyorsunuz. Orta bütçeli butik oteller ve yerel restoranlar size uygun.</p>
+                            <div class="personality-badge">🏛️ Kültür Avcısı</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tercihlerim -->
+                <div id="preferences-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <h3><i class="fas fa-heart"></i> Seyahat Tercihlerim</h3>
+                        <button class="edit-btn" onclick="editPreferences()">
+                            <i class="fas fa-edit"></i> Düzenle
+                        </button>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-section">
+                            <h4><i class="fas fa-wallet"></i> Bütçe Tercihleri</h4>
+                            <div class="info-item">
+                                <span class="info-label">Seyahat Bütçesi</span>
+                                <span class="info-value">Standart (3.000-7.000 TL/gece)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-bed"></i> Konaklama Tercihleri</h4>
+                            <div class="preference-tags">
+                                <span class="preference-tag">🏨 Otel</span>
+                                <span class="preference-tag">🏠 Apart</span>
+                                <span class="preference-tag">🎩 Boutique</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-route"></i> Seyahat Stili</h4>
+                            <div class="preference-tags">
+                                <span class="preference-tag">🏛️ Kültür</span>
+                                <span class="preference-tag">🍜 Gastronomi</span>
+                                <span class="preference-tag">🌿 Doğa</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-hiking"></i> Hobiler</h4>
+                            <div class="preference-tags">
+                                <span class="preference-tag">📸 Fotoğrafçılık</span>
+                                <span class="preference-tag">🏛️ Müzeler</span>
+                                <span class="preference-tag">👨‍🍳 Yemek Yapma</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seyahat Geçmişi -->
+                <div id="travel-history-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <h3><i class="fas fa-passport"></i> Seyahat Geçmişim</h3>
+                        <button class="edit-btn" onclick="addNewTrip()">
+                            <i class="fas fa-plus"></i> Yeni Seyahat
+                        </button>
+                    </div>
+                    
+                    <div style="text-align: center; padding: 3rem;">
+                        <div style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;">
+                            <i class="fas fa-globe-europe"></i>
+                        </div>
+                        <h4>Seyahat Geçmişiniz</h4>
+                        <p style="color: var(--gray); margin: 1rem 0;">Henüz bir seyahat eklemediniz.</p>
+                        <button class="btn-primary" onclick="addNewTrip()">
+                            <i class="fas fa-plus"></i> İlk Seyahatinizi Ekleyin
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AI Ayarları -->
+                <div id="ai-settings-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <h3><i class="fas fa-robot"></i> AI Asistan Ayarları</h3>
+                        <button class="edit-btn" onclick="saveAISettings()">
+                            <i class="fas fa-save"></i> Kaydet
+                        </button>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-section">
+                            <h4><i class="fas fa-sliders-h"></i> AI Tercihleri</h4>
+                            <div class="info-item">
+                                <span class="info-label">Öğrenme Modu</span>
+                                <span class="info-value">Aktif</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Öneri Sıklığı</span>
+                                <span class="info-value">Haftada 2-3</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Bildirimler</span>
+                                <span class="info-value">Açık</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-bell"></i> Bildirimler</h4>
+                            <div style="margin-top: 1rem;">
+                                <label style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                    <input type="checkbox" checked> Fiyat Düşüşü Bildirimleri
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                    <input type="checkbox" checked> Hava Durumu Uyarıları
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                                    <input type="checkbox" checked> AI Önerileri
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="checkbox"> Promosyon ve Kampanyalar
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Güvenlik -->
+                <div id="security-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <h3><i class="fas fa-shield-alt"></i> Güvenlik Ayarları</h3>
+                        <button class="edit-btn" onclick="changePassword()">
+                            <i class="fas fa-key"></i> Şifre Değiştir
+                        </button>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <div class="info-section">
+                            <h4><i class="fas fa-user-shield"></i> Hesap Güvenliği</h4>
+                            <div class="info-item">
+                                <span class="info-label">Son Giriş</span>
+                                <span class="info-value">Bugün, 14:30</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Cihaz</span>
+                                <span class="info-value">Chrome, Windows</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">IP Adresi</span>
+                                <span class="info-value">***.***.***.***</span>
+                            </div>
+                        </div>
+                        
+                        <div class="info-section">
+                            <h4><i class="fas fa-lock"></i> Güvenlik Seçenekleri</h4>
+                            <div style="margin-top: 1rem;">
+                                <button class="btn-secondary" style="width: 100%; margin-bottom: 1rem;" onclick="changePassword()">
+                                    <i class="fas fa-key"></i> Şifre Değiştir
+                                </button>
+                                <button class="btn-secondary" style="width: 100%; margin-bottom: 1rem;" onclick="setup2FA()">
+                                    <i class="fas fa-mobile-alt"></i> 2-Faktör Doğrulama
+                                </button>
+                                <button class="btn-secondary" style="width: 100%;" onclick="viewSessions()">
+                                    <i class="fas fa-desktop"></i> Aktif Oturumlar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Abonelik -->
+                <div id="subscription-section" class="content-section" style="display: none;">
+                    <div class="content-header">
+                        <h3><i class="fas fa-crown"></i> Abonelik Planım</h3>
+                        <button class="edit-btn" onclick="upgradePlan()">
+                            <i class="fas fa-rocket"></i> Yükselt
+                        </button>
+                    </div>
+                    
+                    <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 2rem; border-radius: 15px; text-align: center;">
+                        <h4 style="margin-bottom: 1rem;">ÜCRETSİZ PLAN</h4>
+                        <p style="opacity: 0.9; margin-bottom: 1.5rem;">Temel AI özelliklerine erişiminiz var</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: bold;">3</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8;">Aylık Seyahat</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: bold;">10</div>
+                                <div style="font-size: 0.9rem; opacity: 0.8;">AI Öneri</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn-primary" style="background: white; color: var(--primary);" onclick="upgradePlan()">
+                            <i class="fas fa-crown"></i> PRO'ya Yükselt
+                        </button>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h4 style="margin-bottom: 1rem; color: var(--primary);">Plan Karşılaştırma</h4>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: var(--light);">
+                                    <th style="padding: 1rem; text-align: left;">Özellik</th>
+                                    <th style="padding: 1rem; text-align: center;">Ücretsiz</th>
+                                    <th style="padding: 1rem; text-align: center;">Pro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td style="padding: 1rem;">AI Seyahat Planlaması</td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-check" style="color: var(--success);"></i></td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-check" style="color: var(--success);"></i></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td style="padding: 1rem;">Sınırsız Seyahat Geçmişi</td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-times" style="color: var(--danger);"></i></td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-check" style="color: var(--success);"></i></td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--border);">
+                                    <td style="padding: 1rem;">Öncelikli Destek</td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-times" style="color: var(--danger);"></i></td>
+                                    <td style="padding: 1rem; text-align: center;"><i class="fas fa-check" style="color: var(--success);"></i></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 1rem;">Fiyat</td>
+                                    <td style="padding: 1rem; text-align: center; font-weight: bold;">ÜCRETSİZ</td>
+                                    <td style="padding: 1rem; text-align: center; font-weight: bold;">99₺/ay</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kullanıcı verilerini yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('ventureAI_user') || '{}');
+            
+            // Kullanıcı bilgilerini doldur
+            if (user.fullName) {
+                document.getElementById('userName').textContent = user.fullName;
+                document.getElementById('profileFullName').textContent = user.fullName;
+            }
+            
+            if (user.email) {
+                document.getElementById('userEmail').textContent = user.email;
+                document.getElementById('profileEmail').textContent = user.email;
+            }
+            
+            if (user.phone) {
+                document.getElementById('profilePhone').textContent = user.phone;
+            }
+            
+            if (user.birthDate) {
+                const date = new Date(user.birthDate);
+                document.getElementById('profileBirthDate').textContent = 
+                    date.toLocaleDateString('tr-TR');
+            }
+            
+            // Login kontrolü
+            if (!localStorage.getItem('ventureAI_loggedIn')) {
+                window.location.href = 'login.html';
+            }
+        });
+        
+        // Section geçişleri
+        function showSection(sectionId) {
+            // Tüm section'ları gizle
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Tüm nav item'ları aktiften çıkar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Hedef section'ı göster
+            document.getElementById(`${sectionId}-section`).style.display = 'block';
+            
+            // Nav item'ı aktif yap
+            document.querySelector(`[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+        
+        // Düzenleme fonksiyonları
+        function editPersonalInfo() {
+            alert('Kişisel bilgiler düzenleme özelliği yakında eklenecek!');
+        }
+        
+        function editPreferences() {
+            alert('Tercihler düzenleme özelliği yakında eklenecek!');
+        }
+        
+        function editAvatar() {
+            alert('Profil fotoğrafı değiştirme özelliği yakında eklenecek!');
+        }
+        
+        function addNewTrip() {
+            alert('Yeni seyahat ekleme özelliği yakında eklenecek!');
+        }
+        
+        function saveAISettings() {
+            alert('AI ayarları kaydedildi! (Demo)');
+        }
+        
+        function changePassword() {
+            const newPassword = prompt('Yeni şifrenizi girin:');
+            if (newPassword && newPassword.length >= 8) {
+                alert('Şifreniz başarıyla değiştirildi! (Demo)');
+            } else if (newPassword) {
+                alert('Şifre en az 8 karakter olmalıdır!');
+            }
+        }
+        
+        function setup2FA() {
+            alert('2-Faktör doğrulama özelliği yakında eklenecek!');
+        }
+        
+        function viewSessions() {
+            alert('Aktif oturumlar özelliği yakında eklenecek!');
+        }
+        
+        function upgradePlan() {
+            alert('Pro plan yükseltme özelliği yakında eklenecek!');
+        }
+        
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                localStorage.removeItem('ventureAI_loggedIn');
+                localStorage.removeItem('ventureAI_token');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

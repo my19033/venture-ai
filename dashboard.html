@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Venture AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .dashboard-wrapper {
+            padding: 100px 20px 50px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+        
+        .dashboard-header {
+            max-width: 1200px;
+            margin: 0 auto 2rem;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        .ai-chat-container {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: var(--light);
+            border-radius: 15px;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+        }
+        
+        .message.ai {
+            margin-right: auto;
+        }
+        
+        .message.user {
+            margin-left: auto;
+        }
+        
+        .message-content {
+            padding: 1rem;
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        .message.ai .message-content {
+            background: #e0f2fe;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.user .message-content {
+            background: #fce7f3;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .chat-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 60px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .dashboard-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            background: var(--light);
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        .ai-suggestions {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .suggestion-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+        
+        .suggestion-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .tag {
+            background: var(--light);
+            border: 2px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            margin: 0.25rem;
+        }
+        
+        .tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        @media (max-width: 992px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i>
+                <span>Venture<span class="ai-text">AI</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="dashboard.html" class="btn-login">Dashboard</a>
+                <a href="profile.html">Profilim</a>
+                <button onclick="logout()" class="btn-secondary" style="border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt"></i> Çıkış
+                </button>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard-wrapper">
+        <div class="dashboard-header">
+            <div class="welcome-card">
+                <h1 id="welcomeMessage">Hoş Geldiniz, Kullanıcı!</h1>
+                <p>AI seyahat asistanınız bugün için 3 kişiselleştirilmiş öneri hazırladı.</p>
+                <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        <i class="fas fa-bolt"></i> AI Aktif
+                    </span>
+                    <span style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 20px;">
+                        <i class="fas fa-star"></i> Premium Üye
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="dashboard-container">
+            <!-- ANA İÇERİK - AI CHAT -->
+            <div class="ai-chat-container">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
+                    <i class="fas fa-robot"></i> Venture AI Asistanı
+                </h3>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message ai">
+                        <div class="message-content">
+                            <strong>Venture AI:</strong> Merhaba! Bugün sizin için nasıl yardımcı olabilirim? Yeni bir seyahat planlamak ister misiniz?
+                        </div>
+                    </div>
+                    <div class="message ai">
+                        <div class="message-content">
+                            <strong>AI Öneri:</strong> Tercihlerinize göre İtalya'da bahar tatili için mükemmel zaman. Roma, Floransa ve Venedik rotası öneriyorum.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Venture AI'a soru sorun...">
+                    <button onclick="sendMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <button class="tag" onclick="quickQuestion('İstanbul için 3 günlük kültür turu öner')">İstanbul Turu</button>
+                    <button class="tag" onclick="quickQuestion('Bütçe dostu Ege tatili öner')">Ege Tatili</button>
+                    <button class="tag" onclick="quickQuestion('Yaz için aile tatili fikirleri')">Aile Tatili</button>
+                    <button class="tag" onclick="quickQuestion('Lüks bir haftasonu kaçamağı öner')">Lüks Kaçamak</button>
+                </div>
+            </div>
+            
+            <!-- SIDEBAR -->
+            <div class="dashboard-sidebar">
+                <!-- İSTATİSTİKLER -->
+                <div class="stats-card">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary);">
+                        <i class="fas fa-chart-bar"></i> Seyahat İstatistikleriniz
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);" id="totalTrips">12</div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">Toplam Seyahat</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--success);" id="savedMoney">4.250₺</div>
+                            <div style="font-size: 0.9rem; color: var(--gray);">Tasarruf</div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <button class="action-btn" onclick="planTrip()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Yeni Plan</span>
+                        </button>
+                        <button class="action-btn" onclick="viewHistory()">
+                            <i class="fas fa-history"></i>
+                            <span>Geçmiş</span>
+                        </button>
+                        <button class="action-btn" onclick="budgetAnalysis()">
+                            <i class="fas fa-chart-pie"></i>
+                            <span>Bütçe</span>
+                        </button>
+                        <button class="action-btn" onclick="shareProfile()">
+                            <i class="fas fa-share-alt"></i>
+                            <span>Paylaş</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- AI ÖNERİLERİ -->
+                <div class="ai-suggestions">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary);">
+                        <i class="fas fa-lightbulb"></i> AI Önerileri
+                    </h4>
+                    
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </div>
+                        <div>
+                            <strong>Kapadokya Balayı</strong>
+                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem;">
+                                Sonbahar için özel %15 indirim
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div>
+                            <strong>Gastronomi Turu</strong>
+                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem;">
+                                İzmir'de 5 günlük lezzet rotası
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="suggestion-item">
+                        <div class="suggestion-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <div>
+                            <strong>Eko-Turizm</strong>
+                            <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem;">
+                                Rize'de sürdürülebilir tatil
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" style="width: 100%; margin-top: 1rem;" onclick="viewAllSuggestions()">
+                        Tüm Önerileri Gör
+                    </button>
+                </div>
+                
+                <!-- YAKLAŞAN SEYAHATLER -->
+                <div class="stats-card">
+                    <h4 style="margin-bottom: 1rem; color: var(--primary);">
+                        <i class="fas fa-calendar-alt"></i> Yaklaşan Seyahatler
+                    </h4>
+                    
+                    <div style="background: var(--light); padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>İtalya Turu</strong>
+                                <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem;">
+                                    15-22 Nisan 2024
+                                </p>
+                            </div>
+                            <span style="background: var(--success); color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                                Onaylandı
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="background: var(--light); padding: 1rem; border-radius: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Kapadokya</strong>
+                                <p style="font-size: 0.9rem; color: var(--gray); margin-top: 0.2rem;">
+                                    10-12 Mayıs 2024
+                                </p>
+                            </div>
+                            <span style="background: var(--warning); color: white; padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.8rem;">
+                                Planlanıyor
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Kullanıcıyı yükle
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('ventureAI_user') || '{}');
+            
+            if (user.fullName) {
+                document.getElementById('welcomeMessage').textContent = 
+                    `Hoş Geldiniz, ${user.fullName.split(' ')[0]}!`;
+            }
+            
+            // Login kontrolü
+            if (!localStorage.getItem('ventureAI_loggedIn')) {
+                window.location.href = 'login.html';
+            }
+            
+            // İstatistikleri yükle
+            const stats = JSON.parse(localStorage.getItem('ventureAI_stats') || '{}');
+            if (stats.totalTrips) {
+                document.getElementById('totalTrips').textContent = stats.totalTrips;
+            }
+            if (stats.savedMoney) {
+                document.getElementById('savedMoney').textContent = `${stats.savedMoney}₺`;
+            }
+        });
+        
+        // AI Chat fonksiyonları
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Kullanıcı mesajını ekle
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // AI cevabı için simülasyon
+            setTimeout(() => {
+                const responses = [
+                    "Harika bir tercih! Size özel plan hazırlıyorum...",
+                    "Bu rotayı çok seveceksiniz! Detayları hazırlıyorum.",
+                    "Mükemmel! Bütçenize ve tercihlerinize uygun seçenekler buldum.",
+                    "Tamam! Size birkaç alternatif sunuyorum."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'ai');
+            }, 1000);
+        }
+        
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = `<strong>${sender === 'ai' ? 'Venture AI:' : 'Siz:'}</strong> ${text}`;
+            
+            messageDiv.appendChild(contentDiv);
+            chatMessages.appendChild(messageDiv);
+            
+            // En aşağı kaydır
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function quickQuestion(text) {
+            document.getElementById('chatInput').value = text;
+            sendMessage();
+        }
+        
+        // Dashboard fonksiyonları
+        function planTrip() {
+            const destination = prompt('Nereye gitmek istiyorsunuz?');
+            if (destination) {
+                const dates = prompt('Tarih aralığı? (örn: 15-20 Nisan)');
+                if (dates) {
+                    const budget = prompt('Bütçeniz ne kadar?');
+                    if (budget) {
+                        addMessage(`${destination} için ${dates} tarihlerinde ${budget} bütçeli bir plan istiyorum.`, 'user');
+                        setTimeout(() => {
+                            addMessage(`${destination} için mükemmel! Size özel plan hazırlıyorum...`, 'ai');
+                        }, 1000);
+                    }
+                }
+            }
+        }
+        
+        function viewHistory() {
+            window.location.href = 'profile.html#travel-history';
+        }
+        
+        function budgetAnalysis() {
+            alert('Bütçe analizi özelliği yakında eklenecek!');
+        }
+        
+        function shareProfile() {
+            alert('Profil paylaşma özelliği yakında eklenecek!');
+        }
+        
+        function viewAllSuggestions() {
+            alert('Tüm AI önerileri sayfası yakında eklenecek!');
+        }
+        
+        function logout() {
+            if (confirm('Çıkış yapmak istediğinize emin misiniz?')) {
+                localStorage.removeItem('ventureAI_loggedIn');
+                localStorage.removeItem('ventureAI_token');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // Enter tuşu ile mesaj gönder
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Mobil menü
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            
+            if (window.innerWidth <= 768) {
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'white';
+                navLinks.style.padding = '2rem';
+                navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
+</body>
+</html>

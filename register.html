@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - Venture AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-wrapper {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 20px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .register-container {
+            background: white;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .register-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .register-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .register-content {
+            padding: 2.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            outline: none;
+        }
+        
+        .password-wrapper {
+            position: relative;
+        }
+        
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .preference-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .tag {
+            background: var(--light);
+            border: 2px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .tag:hover {
+            border-color: var(--primary);
+        }
+        
+        .tag.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: var(--border);
+            z-index: 1;
+        }
+        
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--border);
+            color: var(--gray);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: bold;
+        }
+        
+        .step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .step.completed .step-circle {
+            background: var(--success);
+            color: white;
+        }
+        
+        .form-step {
+            display: block;
+        }
+        
+        .form-step:not(.active-step) {
+            display: none;
+        }
+        
+        .register-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .success-message {
+            background: #dfd;
+            color: #373;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i>
+                <span>Venture<span class="ai-text">AI</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="login.html" class="btn-login">Giriş Yap</a>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- KAYIT FORMU -->
+    <div class="register-wrapper">
+        <div class="register-container">
+            <div class="register-header">
+                <h1><i class="fas fa-user-astronaut"></i> Venture AI'ya Katılın</h1>
+                <p>Kişiselleştirilmiş AI seyahat deneyimine adım atın</p>
+            </div>
+            
+            <div class="register-content">
+                <div id="errorMessage" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> 
+                    <span id="errorText"></span>
+                </div>
+                
+                <div id="successMessage" class="success-message">
+                    <i class="fas fa-check-circle"></i> 
+                    <span id="successText"></span>
+                </div>
+                
+                <!-- İlerleme Adımları -->
+                <div class="progress-steps">
+                    <div class="step active" id="step1-indicator">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Temel Bilgiler</div>
+                    </div>
+                    <div class="step" id="step2-indicator">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Tercihler</div>
+                    </div>
+                    <div class="step" id="step3-indicator">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Hobiler</div>
+                    </div>
+                </div>
+                
+                <!-- ADIM 1: Temel Bilgiler -->
+                <div id="step1" class="form-step active-step">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
+                        <i class="fas fa-user-circle"></i> Temel Bilgileriniz
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="fullName">Ad Soyad *</label>
+                        <input type="text" id="fullName" class="form-control" placeholder="Adınız Soyadınız" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-posta Adresi *</label>
+                        <input type="email" id="email" class="form-control" placeholder="ornek@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Şifre *</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" class="form-control" placeholder="En az 8 karakter" required minlength="8">
+                            <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <small style="color: var(--gray); margin-top: 0.5rem; display: block;">
+                            Şifreniz en az 8 karakter olmalıdır.
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="birthDate">Doğum Tarihi</label>
+                        <input type="date" id="birthDate" class="form-control">
+                    </div>
+                    
+                    <div class="register-actions">
+                        <button onclick="nextStep(2)" class="btn-primary" style="flex: 1;">
+                            Devam Et <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- ADIM 2: Tercihler -->
+                <div id="step2" class="form-step">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
+                        <i class="fas fa-suitcase-rolling"></i> Seyahat Tercihleriniz
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="budget">Seyahat Bütçeniz *</label>
+                        <select id="budget" class="form-control" required>
+                            <option value="">Seçiniz</option>
+                            <option value="economy">Ekonomik (1.000-3.000 TL/gece)</option>
+                            <option value="standard">Standart (3.000-7.000 TL/gece)</option>
+                            <option value="premium">Premium (7.000-15.000 TL/gece)</option>
+                            <option value="luxury">Lüks (15.000+ TL/gece)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Konaklama Tercihiniz</label>
+                        <div class="preference-tags" id="accommodation-tags">
+                            <div class="tag" data-value="hotel">🏨 Otel</div>
+                            <div class="tag" data-value="hostel">🛏️ Hostel</div>
+                            <div class="tag" data-value="apartment">🏠 Apart</div>
+                            <div class="tag" data-value="villa">🏡 Villa</div>
+                        </div>
+                        <input type="hidden" id="accommodation">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Seyahat Stiliniz</label>
+                        <div class="preference-tags" id="travelStyle-tags">
+                            <div class="tag" data-value="adventure">🧗 Macera</div>
+                            <div class="tag" data-value="luxury">🌟 Lüks</div>
+                            <div class="tag" data-value="culture">🏛️ Kültür</div>
+                            <div class="tag" data-value="relax">🏖️ Dinlence</div>
+                        </div>
+                        <input type="hidden" id="travelStyle">
+                    </div>
+                    
+                    <div class="register-actions">
+                        <button onclick="prevStep()" class="btn-secondary" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Geri
+                        </button>
+                        <button onclick="nextStep(3)" class="btn-primary" style="flex: 1;">
+                            Devam Et <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- ADIM 3: Hobiler -->
+                <div id="step3" class="form-step">
+                    <h3 style="margin-bottom: 1.5rem; color: var(--primary);">
+                        <i class="fas fa-heart"></i> İlgi Alanlarınız
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label>Hobileriniz</label>
+                        <div class="preference-tags" id="hobbies-tags">
+                            <div class="tag" data-value="hiking">🥾 Doğa Yürüyüşü</div>
+                            <div class="tag" data-value="photography">📸 Fotoğrafçılık</div>
+                            <div class="tag" data-value="museum">🏛️ Müzeler</div>
+                            <div class="tag" data-value="food">🍜 Yemek</div>
+                        </div>
+                        <input type="hidden" id="hobbies">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="travelPartner">Seyahat Partneri *</label>
+                        <select id="travelPartner" class="form-control" required>
+                            <option value="">Seçiniz</option>
+                            <option value="solo">👤 Tek Başıma</option>
+                            <option value="couple">👫 Çift</option>
+                            <option value="family">👨‍👩‍👧‍👦 Aile</option>
+                            <option value="friends">👥 Arkadaş Grubu</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="terms" required>
+                            <a href="#">Kullanım Koşulları</a> ve <a href="#">Gizlilik Politikası</a>'nı okudum ve kabul ediyorum.
+                        </label>
+                    </div>
+                    
+                    <div class="register-actions">
+                        <button onclick="prevStep()" class="btn-secondary" style="flex: 1;">
+                            <i class="fas fa-arrow-left"></i> Geri
+                        </button>
+                        <button onclick="registerUser()" class="btn-primary" style="flex: 1;">
+                            <i class="fas fa-check-circle"></i> Kaydı Tamamla
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Yükleniyor -->
+                <div id="loading" style="display: none; text-align: center; padding: 3rem;">
+                    <div style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                    <h3>AI Profiliniz Oluşturuluyor...</h3>
+                    <p>Tercihleriniz analiz ediliyor ve kişiselleştirilmiş öneriler hazırlanıyor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let userData = {
+            preferences: {
+                accommodation: [],
+                travelStyle: [],
+                hobbies: []
+            }
+        };
+        
+        // Tag seçimi
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                updateSelectedTags();
+            });
+        });
+        
+        function updateSelectedTags() {
+            const categories = ['accommodation', 'travelStyle', 'hobbies'];
+            
+            categories.forEach(category => {
+                const tags = document.querySelectorAll(`#${category}-tags .tag.selected`);
+                userData.preferences[category] = Array.from(tags).map(tag => tag.getAttribute('data-value'));
+                document.getElementById(category).value = userData.preferences[category].join(',');
+            });
+        }
+        
+        // Şifre göster/gizle
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleButton = passwordInput.parentNode.querySelector('.toggle-password i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+        
+        // Adım geçişleri
+        function nextStep(step) {
+            if (!validateStep(currentStep)) return;
+            
+            document.getElementById(`step${currentStep}`).classList.remove('active-step');
+            document.getElementById(`step${step}`).classList.add('active-step');
+            
+            // İlerleme göstergesini güncelle
+            document.querySelectorAll('.step').forEach((el, index) => {
+                if (index + 1 < step) {
+                    el.classList.remove('active');
+                    el.classList.add('completed');
+                } else if (index + 1 === step) {
+                    el.classList.add('active');
+                    el.classList.remove('completed');
+                } else {
+                    el.classList.remove('active', 'completed');
+                }
+            });
+            
+            currentStep = step;
+        }
+        
+        function prevStep() {
+            nextStep(currentStep - 1);
+        }
+        
+        function validateStep(step) {
+            const errorDiv = document.getElementById('errorMessage');
+            
+            if (step === 1) {
+                const fullName = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value;
+                
+                if (!fullName || !email || !password) {
+                    showError('Lütfen tüm zorunlu alanları doldurun.');
+                    return false;
+                }
+                
+                if (password.length < 8) {
+                    showError('Şifre en az 8 karakter olmalıdır.');
+                    return false;
+                }
+                
+                if (!validateEmail(email)) {
+                    showError('Lütfen geçerli bir e-posta adresi girin.');
+                    return false;
+                }
+                
+                // Verileri kaydet
+                userData.fullName = fullName;
+                userData.email = email;
+                userData.password = password;
+                userData.birthDate = document.getElementById('birthDate').value;
+                
+                clearError();
+                return true;
+            }
+            
+            if (step === 2) {
+                const budget = document.getElementById('budget').value;
+                if (!budget) {
+                    showError('Lütfen seyahat bütçenizi seçin.');
+                    return false;
+                }
+                userData.budget = budget;
+                
+                clearError();
+                return true;
+            }
+            
+            if (step === 3) {
+                const travelPartner = document.getElementById('travelPartner').value;
+                const terms = document.getElementById('terms').checked;
+                
+                if (!travelPartner) {
+                    showError('Lütfen seyahat partneri tercihinizi belirtin.');
+                    return false;
+                }
+                
+                if (!terms) {
+                    showError('Lütfen kullanım koşullarını kabul edin.');
+                    return false;
+                }
+                
+                userData.travelPartner = travelPartner;
+                userData.createdAt = new Date().toISOString();
+                
+                clearError();
+                return true;
+            }
+            
+            return true;
+        }
+        
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            document.getElementById('errorText').textContent = message;
+            errorDiv.style.display = 'block';
+        }
+        
+        function clearError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.style.display = 'none';
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            document.getElementById('successText').textContent = message;
+            successDiv.style.display = 'block';
+        }
+        
+        async function registerUser() {
+            if (!validateStep(3)) return;
+            
+            // Formu gizle, loading göster
+            document.getElementById(`step${currentStep}`).classList.remove('active-step');
+            document.getElementById('loading').style.display = 'block';
+            
+            try {
+                // Simülasyon: 2 saniye bekle
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // LocalStorage'a kaydet
+                localStorage.setItem('ventureAI_user', JSON.stringify(userData));
+                localStorage.setItem('ventureAI_loggedIn', 'true');
+                localStorage.setItem('ventureAI_token', 'demo_token_' + Date.now());
+                
+                // Başarı mesajı göster
+                document.getElementById('loading').style.display = 'none';
+                showSuccess('Kayıt başarılı! Yönlendiriliyorsunuz...');
+                
+                // 2 saniye sonra dashboard'a yönlendir
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Kayıt hatası:', error);
+                showError('Kayıt sırasında bir hata oluştu. Lütfen tekrar deneyin.');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById(`step${currentStep}`).classList.add('active-step');
+            }
+        }
+        
+        // Sayfa yüklendiğinde tarih input'una bugünü -18 yıl ekle
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+            
+            const birthDateInput = document.getElementById('birthDate');
+            birthDateInput.max = maxDate.toISOString().split('T')[0];
+            
+            // Eğer zaten giriş yapmışsa dashboard'a yönlendir
+            if (localStorage.getItem('ventureAI_loggedIn')) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venture AI | Akıllı Seyahat Asistanı</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #7c3aed;
+            --accent: #0ea5e9;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --border: #e2e8f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* NAVBAR */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+        
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--dark);
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .ai-text {
+            color: var(--secondary);
+            font-weight: 900;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-left: 2rem;
+        }
+        
+        .btn-login {
+            padding: 0.6rem 1.5rem;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-register {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s;
+        }
+        
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        
+        .stat h3 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.3s;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* AI INTERFACE */
+        .ai-interface {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .chat-container {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1.5rem;
+        }
+        
+        .message {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: flex-start;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .message.user .avatar {
+            background: var(--secondary);
+        }
+        
+        .message .text {
+            background: #f1f5f9;
+            padding: 1rem;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+        
+        .message.ai .text {
+            background: #e0f2fe;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .message.user .text {
+            background: #fce7f3;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+        
+        .ai-suggestion {
+            background: linear-gradient(135deg, #a7f3d0, #6ee7b7);
+            padding: 1rem;
+            border-radius: 15px;
+            color: #065f46;
+        }
+        
+        .ai-suggestion h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* FEATURES */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        /* HOW IT WORKS */
+        .how-it-works {
+            padding: 80px 0;
+            background: var(--light);
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* DEMO */
+        .demo {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .demo .section-title,
+        .demo .section-subtitle {
+            color: white;
+        }
+        
+        .demo-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .demo-input {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .demo-input input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .demo-input button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .demo-response {
+            background: rgba(255,255,255,0.2);
+            padding: 1rem;
+            border-radius: 10px;
+        }
+        
+        /* CTA */
+        .cta {
+            padding: 80px 0;
+            text-align: center;
+            background: white;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta p {
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .btn-large {
+            padding: 1.2rem 3rem;
+            font-size: 1.2rem;
+        }
+        
+        /* FOOTER */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-col h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-col a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: white;
+        }
+        
+        .social {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #94a3b8;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .cta-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-plane"></i>
+                <span>Venture<span class="ai-text">AI</span></span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#features">Özellikler</a>
+                <a href="#how-it-works">Nasıl Çalışır?</a>
+                <a href="#demo">Demo</a>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn-login">Giriş Yap</a>
+                    <a href="register.html" class="btn-register">Ücretsiz Kaydol</a>
+                </div>
+            </div>
+            
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Geleceğin <span class="highlight">Seyahat Deneyimi</span> Burada</h1>
+                <p class="subtitle">Venture AI ile kişiselleştirilmiş seyahat planları, AI destekli öneriler ve akıllı bütçe yönetimi.</p>
+                
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>10,000+</h3>
+                        <p>Mutlu Gezgin</p>
+                    </div>
+                    <div class="stat">
+                        <h3>50+</h3>
+                        <p>Ülke Kapsamı</p>
+                    </div>
+                    <div class="stat">
+                        <h3>%97</h3>
+                        <p>Memnuniyet Oranı</p>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons">
+                    <a href="register.html" class="btn-primary">
+                        <i class="fas fa-rocket"></i> Ücretsiz Başla
+                    </a>
+                    <a href="#demo" class="btn-secondary">
+                        <i class="fas fa-play-circle"></i> Demo İzle
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-image">
+                <div class="ai-interface">
+                    <div class="chat-container">
+                        <div class="message ai">
+                            <div class="avatar">AI</div>
+                            <div class="text">Merhaba! Size özel bir seyahat planı hazırlayabilirim.</div>
+                        </div>
+                        <div class="message user">
+                            <div class="avatar"><i class="fas fa-user"></i></div>
+                            <div class="text">İstanbul'dan 5 günlük bir kültür turu istiyorum.</div>
+                        </div>
+                        <div class="message ai">
+                            <div class="avatar">AI</div>
+                            <div class="text">Harika! Size 12 müze, 8 tarihi mekan ve özel gastronomi rotası hazırladım.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="ai-suggestion">
+                        <h4><i class="fas fa-lightbulb"></i> AI Önerisi</h4>
+                        <p>"Tercihlerinize göre en iyi zaman: Nisan-Mayıs ayları"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Neden Venture AI?</h2>
+            <p class="section-subtitle">AI gücüyle dönüştürülmüş seyahat deneyimi</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h3>Kişiselleştirilmiş Profil</h3>
+                    <p>Yaş, hobiler, bütçe ve tercihlerinize göre özelleştirilmiş seyahat planları.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Seyahat Asistanı</h3>
+                    <p>7/24 çalışan yapay zeka asistanı ile anında öneri ve planlama.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Akıllı Fiyat Tahmini</h3>
+                    <p>Uçak ve otel fiyatlarını tahmin ederek en uygun zamanı bulun.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Sosyal Eşleştirme</h3>
+                    <p>Benzer ilgi alanlarına sahip gezginlerle tanışın ve birlikte seyahat edin.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Güvenli Seyahat</h3>
+                    <p>Gerçek zamanlı güvenlik uyarıları ve acil durum desteği.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Sürdürülebilir Turizm</h3>
+                    <p>Çevre dostu seyahat önerileri ve karbon ayak izi takibi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">3 Adımda Mükemmel Seyahat</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Profilini Oluştur</h3>
+                        <p>Yaş, hobiler, bütçe ve seyahat tarzını belirle. AI seni tanısın.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>AI Planlamasını Bekle</h3>
+                        <p>Yapay zeka milyonlarca veriyi analiz ederek kişisel planını hazırlasın.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Keyfini Çıkar</h3>
+                        <p>Rezervasyonlar otomatik yapılsın, sen sadece gezmenin tadını çıkar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo" class="demo">
+        <div class="container">
+            <h2 class="section-title">AI Asistanımızla Tanışın</h2>
+            <p class="section-subtitle">Seyahat isteğinizi yazın, AI hemen planlasın</p>
+            
+            <div class="demo-box">
+                <div class="demo-input">
+                    <input type="text" id="demoQuery" placeholder="Örn: 'Ailemle Ege'de 7 günlük bir yaz tatili planla'">
+                    <button onclick="askAI()">
+                        <i class="fas fa-paper-plane"></i> AI'ya Sor
+                    </button>
+                </div>
+                <div class="demo-response" id="demoResponse">
+                    <p><i class="fas fa-robot"></i> Venture AI: Seyahat isteğinizi bekliyorum. Nereye gitmek istiyorsunuz?</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <h2>Mükemmel Seyahatine Bugün Başla</h2>
+            <p>Binlerce gezgin gibi siz de Venture AI ile daha akıllı seyahat edin.</p>
+            <a href="register.html" class="btn-primary btn-large">
+                <i class="fas fa-user-plus"></i> Ücretsiz Hesap Aç
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="index.html" class="logo">
+                        <i class="fas fa-plane"></i>
+                        <span>Venture<span class="ai-text">AI</span></span>
+                    </a>
+                    <p>AI destekli kişiselleştirilmiş seyahat planlama platformu.</p>
+                    <div class="social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Ürün</h4>
+                    <a href="#features">Özellikler</a>
+                    <a href="#demo">Demo</a>
+                    <a href="#how-it-works">Nasıl Çalışır?</a>
+                    <a href="#pricing">Fiyatlar</a>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Şirket</h4>
+                    <a href="#about">Hakkımızda</a>
+                    <a href="#">Kariyer</a>
+                    <a href="#">Blog</a>
+                    <a href="#">İletişim</a>
+                </div>
+                
+                <div class="footer-col">
+                    <h4>Yasal</h4>
+                    <a href="#">Gizlilik Politikası</a>
+                    <a href="#">Kullanım Şartları</a>
+                    <a href="#">Çerez Politikası</a>
+                    <a href="#">GDPR</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2023 Venture AI. Tüm hakları saklıdır.</p>
+                <p>Bir <strong>MY YAZILIM</strong> girişimi</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobil menü toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            
+            if (window.innerWidth <= 768) {
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'white';
+                navLinks.style.padding = '2rem';
+                navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+            }
+        });
+        
+        // AI Demo fonksiyonu
+        function askAI() {
+            const query = document.getElementById('demoQuery').value;
+            const response = document.getElementById('demoResponse');
+            
+            if (!query.trim()) {
+                response.innerHTML = '<p><i class="fas fa-robot"></i> Venture AI: Lütfen bir seyahat isteği yazın.</p>';
+                return;
+            }
+            
+            const responses = [
+                `Harika fikir! "${query}" için size özel plan hazırlıyorum...`,
+                `Mükemmel! "${query}" rotasını çok seveceksiniz.`,
+                `Tamam! "${query}" için bütçenize uygun seçenekler buldum.`,
+                `"${query}" için AI analizim tamamlandı. Size öneriler sunuyorum.`
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            response.innerHTML = `<p><i class="fas fa-robot"></i> Venture AI: ${randomResponse}</p>`;
+            
+            // Input'u temizle
+            document.getElementById('demoQuery').value = '';
+        }
+        
+        // Enter tuşu ile AI'ya sor
+        document.getElementById('demoQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askAI();
+            }
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
